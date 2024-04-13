@@ -1,4 +1,4 @@
-pluginManagement {
+ pluginManagement {
   repositories {
     google {
       content {
@@ -21,4 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "foodies"
 include(":app")
- 
+include(":data")
+include(":domain")
