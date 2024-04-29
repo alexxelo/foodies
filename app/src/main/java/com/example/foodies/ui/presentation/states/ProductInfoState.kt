@@ -2,8 +2,8 @@ package com.example.foodies.ui.presentation.states
 
 import com.example.domain.models.ProductsModel
 
-data class  ProductState (
-  val products: List<ProductsModel>? = listOf(),
+data class ProductInfoState(
+  val products: ProductsModel? = null,
   val error: String = "",
   val isLoading: Boolean = false
 )

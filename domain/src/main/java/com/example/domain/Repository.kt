@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface Repository {
 
   suspend fun getCategory(): Flow<List<CategoryModel>>
-  suspend fun getTag(): Flow<List<TagsModel>>
-  suspend fun getProducts(): Flow<List<ProductsModel>>
+  suspend fun getTag(): List<TagsModel>
+  suspend fun getProducts(): List<ProductsModel>
 
 }

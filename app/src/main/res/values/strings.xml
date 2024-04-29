@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">foodies</string>
+    <string name="carbohydrates">Углеводы</string>
+    <string name="food_image">image</string>
+    <string name="in_cart_for">В корзину за %1$s</string>
+    <string name="order_for">Заказать за %1$s</string>
+    <string name="bucket">Корзина</string>
+    <string name="empty_cart_text">Пусто, выберите блюда в каталоге :)</string>
+    <string name="fats">Жиры</string>
+    <string name="proteins">Белки</string>
+    <string name="energy">Энерг. ценность</string>
+    <string name="measure">Вес</string>
 </resources>

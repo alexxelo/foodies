@@ -68,6 +68,7 @@ dependencies {
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
 
+  implementation(libs.coil.kt.coil.compose)
 
   implementation(libs.hilt.android)
   kapt(libs.hilt.android.compiler)
@@ -76,12 +77,18 @@ dependencies {
   implementation(libs.androidx.navigation.ui.ktx)
   implementation(libs.androidx.hilt.navigation.compose)
 
+  implementation(libs.androidx.lifecycle.viewmodel.compose)
+
 
   implementation(libs.retrofit)
   implementation(libs.converter.gson)
 
+  implementation (libs.compose)
+
   implementation(project(":domain"))
   implementation(project(":data"))
+
+  implementation(libs.androidx.lifecycle.runtime.compose)
 
 
 }

@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.foodies.ui.presentation.catalog.CatalogScreen
-import com.example.foodies.ui.presentation.catalog.CatalogViewModel
+import com.example.foodies.ui.presentation.navigation.Navigation
 import com.example.foodies.ui.theme.FoodiesTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,9 +18,15 @@ class MainActivity : ComponentActivity() {
     setContent {
       FoodiesTheme {
         // A surface container using the 'background' color from the theme
-        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-          val viewModel: CatalogViewModel = hiltViewModel()
-          CatalogScreen(viewModel = viewModel)
+        Surface(
+          modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background,
+          //tonalElevation = 0.dp,
+          //shadowElevation = 10.dp
+        ) {
+
+          Navigation()
+
+
         }
       }
     }

@@ -8,6 +8,7 @@ fun Products.toModel() = ProductsModel(
   categoryId = categoryId,
   name = name,
   description = description,
+  image = image,
   priceCurrent = priceCurrent,
   priceOld = priceOld,
   measure = measure,
@@ -16,7 +17,7 @@ fun Products.toModel() = ProductsModel(
   proteinsPer100Grams = proteinsPer100Grams,
   fatsPer100Grams = fatsPer100Grams,
   carbohydratesPer100Grams = carbohydratesPer100Grams,
-  tagIds = tagIds.map { it.toModel() }
+  tagIds = tagIds
 )
 
 fun ProductsModel.toEntity() = Products(
@@ -24,6 +25,7 @@ fun ProductsModel.toEntity() = Products(
   categoryId = categoryId,
   name = name,
   description = description,
+  image = image,
   priceCurrent = priceCurrent,
   priceOld = priceOld,
   measure = measure,
@@ -32,5 +34,5 @@ fun ProductsModel.toEntity() = Products(
   proteinsPer100Grams = proteinsPer100Grams,
   fatsPer100Grams = fatsPer100Grams,
   carbohydratesPer100Grams = carbohydratesPer100Grams,
-  tagIds = tagIds.map { it.toEntity() }
+  tagIds = tagIds
 )

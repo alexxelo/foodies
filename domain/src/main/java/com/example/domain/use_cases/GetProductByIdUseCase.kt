@@ -7,12 +7,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class GetProductsUseCase @Inject constructor(private val repository: Repository) {
-  operator fun invoke(): Flow<Resource<List<ProductsModel>>> = flow {
+class GetProductByIdUseCase @Inject constructor(
+  private val repository: Repository
+) {
+  operator fun invoke(itemId: Int): Flow<Resource<ProductsModel>> = flow {
     try {
       emit(Resource.Loading())
-      val prod = repository.getProducts()
-      emit(Resource.Success(prod))
+      val prod = repository.getProducts().find { product ->
+        product.id == itemId
+      }
+
+      if (prod != null)
+        emit(Resource.Success(prod))
 
     } catch (e: Exception) {
       emit(Resource.Error("An unexpected error occurred: ${e.localizedMessage}"))
