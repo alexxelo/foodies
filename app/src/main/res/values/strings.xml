@@ -10,4 +10,8 @@
     <string name="proteins">Белки</string>
     <string name="energy">Энерг. ценность</string>
     <string name="measure">Вес</string>
+    <string name="find_product">Найти блюдо</string>
+    <string name="empty_search_screen">Введите название блюда, которые ищите</string>
+    <string name="empty_search_result">Ничего не нашлось :(</string>
+    <string name="empty_filter_result">Таких блюд нет :( Попробуйте изменить фильтры</string>
 </resources>

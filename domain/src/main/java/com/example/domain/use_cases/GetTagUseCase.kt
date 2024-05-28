@@ -11,7 +11,7 @@ class GetTagUseCase @Inject constructor(private val repository: Repository) {
   operator fun invoke(): Flow<Resource<List<TagsModel>>> = flow {
     try {
       emit(Resource.Loading())
-      val tags = repository.getTag()
+      val tags: List<TagsModel> = repository.getTag()
 
       emit(Resource.Success(tags))
 

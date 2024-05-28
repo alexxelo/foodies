@@ -48,7 +48,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.domain.models.ProductsModel
 import com.example.foodies.R
-import com.example.foodies.ui.presentation.catalog.ButtonsCounter
+import com.example.foodies.ui.presentation.util.ButtonsCounter
+import com.example.foodies.ui.presentation.util.EmptyScreen
 import com.example.foodies.ui.presentation.util.PriceFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -117,13 +118,15 @@ fun CartScreen(
       cart.products?.let { products ->
         val uniqueProducts = products.distinctBy { it.id }
         LazyColumn(modifier = modifier) {
-          items(items = uniqueProducts, key = { product -> product.id + viewModel.cart.value.countRepeatedProducts(product.id) }) { product ->
+          items(
+            items = uniqueProducts,
+            key = { product -> product.id + viewModel.cart.value.countRepeatedProducts(product.id) }) { product ->
 
             Item(
               productName = product.name,
               priceCurrent = PriceFormatter.formatPrice(product.priceCurrent),
               priceOld = PriceFormatter.formatPrice(product.priceOld),
-              count =  viewModel.cart.value.countRepeatedProducts(product.id),
+              count = viewModel.cart.value.countRepeatedProducts(product.id),
               onMinusClicked = { onMinusClicked(product) },
               onPlusClicked = { onPlusClicked(product) },
             )
@@ -133,22 +136,12 @@ fun CartScreen(
         }
       }
       if (cart.totalItems <= 0)
-        EmptyCart(Modifier.fillMaxSize())
+        EmptyScreen(Modifier.fillMaxSize(), stringResource(R.string.empty_cart_text))
     }
 
   }
 }
 
-@Composable
-fun EmptyCart(modifier: Modifier = Modifier) {
-  Column(
-    modifier = modifier,
-    horizontalAlignment = Alignment.CenterHorizontally,
-    verticalArrangement = Arrangement.Center
-  ) {
-    Text(text = stringResource(R.string.empty_cart_text))
-  }
-}
 
 @Composable
 fun Item(
@@ -218,5 +211,5 @@ fun Item(
 @Preview
 @Composable
 fun CartScreenPreview(modifier: Modifier = Modifier) {
-  EmptyCart()
+  //EmptyScreen()
 }

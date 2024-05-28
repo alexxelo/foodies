@@ -15,7 +15,7 @@ data class ProductsModel(
   val categoryId: Int,
   val name: String,
   val description: String,
-  val image:String,
+  val image: String,
   val priceCurrent: Int,
   val priceOld: Int?,
   val measure: Int,
@@ -25,4 +25,17 @@ data class ProductsModel(
   val fatsPer100Grams: Double,
   val carbohydratesPer100Grams: Double,
   val tagIds: List<Int>,
-)
+) {
+  fun doesMatchSearchQuery(query: String): Boolean {
+    val matchingCombination = listOf(
+      name,
+      " $name",
+      "$name ",
+      "${name.first()} ",
+    )
+    return matchingCombination.any {
+      it.contains(query, ignoreCase = true)
+    }
+
+  }
+}

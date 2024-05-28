@@ -16,6 +16,8 @@ import com.example.foodies.ui.presentation.catalog.CatalogScreen
 import com.example.foodies.ui.presentation.catalog.CatalogViewModel
 import com.example.foodies.ui.presentation.item_card.ItemCardScreen
 import com.example.foodies.ui.presentation.item_card.ItemCardViewModel
+import com.example.foodies.ui.presentation.search.SearchScreen
+import com.example.foodies.ui.presentation.search.SearchViewModel
 import com.example.foodies.ui.presentation.util.SplashScreen
 
 @Composable
@@ -34,8 +36,9 @@ fun Navigation(modifier: Modifier = Modifier) {
 
     composable(route = Screen.CatalogScreen.route) {
       val catalogViewModel: CatalogViewModel = hiltViewModel()
+
       CatalogScreen(
-        onSearchClicked = {},
+        onSearchClicked = { navController.navigate(Screen.SearchScreen.route) },
         onBucketClicked = { navController.navigate(Screen.BucketScreen.route) },
         onCategoryClicked = { catalogViewModel.categoryFilter(it) },
         onFilterClicked = {},
@@ -70,8 +73,20 @@ fun Navigation(modifier: Modifier = Modifier) {
         onBackClicked = { navController.popBackStack() },
         addToCartClicked = { cartViewModel.addItem(it) },
         productState = itemViewModel.product,
-        //cardViewModel = cartViewModel
+      )
+    }
+    composable(
+      route = Screen.SearchScreen.route
+    ) {
+      val searchViewModel: SearchViewModel = hiltViewModel()
 
+      SearchScreen(
+        onBackClicked = { navController.popBackStack() },
+        viewModel = searchViewModel,
+        cartViewModel = cartViewModel,
+        onItemClicked = { id ->  navController.navigate(Screen.ItemScreen.route + "/$id") },
+        onPlusClicked = { cartViewModel.addItem(it) },
+        onMinusClicked = { cartViewModel.deleteItem(it) }
       )
     }
   }

@@ -2,27 +2,25 @@ package com.example.foodies.ui.presentation.catalog
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -37,10 +35,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -53,8 +51,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.domain.models.CategoryModel
 import com.example.domain.models.ProductsModel
+import com.example.domain.models.TagsModel
 import com.example.foodies.R
 import com.example.foodies.ui.presentation.bucket.CartViewModel
+import com.example.foodies.ui.presentation.util.ButtonsCounter
 import com.example.foodies.ui.presentation.util.PriceFormatter
 
 
@@ -75,19 +75,13 @@ fun CatalogScreen(
 
   val categoryState = catalogViewModel.category.value
   val productsState = catalogViewModel.filteredList.value
-
   val tagState = catalogViewModel.tag.value
 
   val cart = cartViewModel.cart.value
 
   val selectedCategory = catalogViewModel.selectedCategory.value
 
-
   val cartTotalItemsState = remember { mutableIntStateOf(cart.totalItems) }
-
-  LaunchedEffect(Unit) {
-    catalogViewModel.autoSelectCategory(categoryState.categories ?: emptyList())
-  }
 
   Scaffold(
     topBar = {
@@ -162,9 +156,14 @@ fun CatalogScreen(
           ) {
             items(
               items = productsModelList,
-              key = { productsModelList -> productsModelList.id.toString() + cartViewModel.cart.value.countRepeatedProducts(productsModelList.id) }) { productsModel ->
+              key = { productsModelList ->
+                productsModelList.id.toString() + cartViewModel.cart.value.countRepeatedProducts(
+                  productsModelList.id
+                )
+              }) { productsModel ->
               ItemCard(
                 products = productsModel,
+                tag = tagState.tags,
                 onItemClicked = { id -> onItemClicked(id) },
                 isOnCart = cartViewModel.isOnCart(productsModel = productsModel),
                 count = cartViewModel.cart.value.countRepeatedProducts(productsModel.id),
@@ -192,7 +191,6 @@ fun CatalogScreen(
   }
 }
 
-
 @Composable
 fun CategoryItem(
   categoryModel: CategoryModel, isActive: Boolean = true,
@@ -210,7 +208,7 @@ fun CategoryItem(
     } else {
       ButtonDefaults.buttonColors(
         contentColor = Color.Black,
-        containerColor = Color.White
+        containerColor = Color.Transparent
       )
     }
   ) {
@@ -223,7 +221,7 @@ fun CategoryItem(
 fun ItemCard(
   modifier: Modifier = Modifier,
   products: ProductsModel,
-  tag: Boolean = true,
+  tag: List<TagsModel>? = null,
   isOnCart: Boolean,
   count: Int,
   addToCart: (product: ProductsModel) -> Unit,
@@ -231,24 +229,85 @@ fun ItemCard(
   onMinusClicked: () -> Unit,
   onPlusClicked: () -> Unit,
 ) {
-  val cartItemsCount = remember { mutableStateOf(count) } // Используем переданное значение как начальное значение
+  val cartItemsCount = remember { mutableIntStateOf(count) }
 
   LaunchedEffect(Unit) {
-    cartItemsCount.value = count // Обновляем значение при изменении count
+    cartItemsCount.intValue = count
   }
   Card(
     colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.gray_bg)),
     modifier = modifier
       .padding(8.dp)
       .clickable { onItemClicked(products.id) }) {
-
-    Image(painter = painterResource(id = R.drawable.photo), contentDescription = "")
+    //Box(modifier = Modifier) {
+//      products.tagIds.forEachIndexed { index, tagId ->
+//        val tags = tag?.find { it.id == tagId } // Находим соответствующий тег по идентификатору
+//        val tagsColorsGradient = when (tagId) {
+//          1 -> {
+//            listOf(
+//              Color(0xFF729EF2),
+//              Color(0xFF9365C2),
+//              Color(0xFF452192)
+//            )
+//          }
+//
+//          2 -> {
+//            listOf(
+//              Color(0xFFF97D23),
+//              Color(0xFFFB4E1E),
+//              Color(0xFFF83600)
+//            )
+//          }
+//
+//          3 -> {
+//            listOf(
+//              Color(0xFFA8E063),
+//              Color(0xFF66BE3E),
+//              Color(0xFF56AB2F)
+//            )
+//          }
+//
+//          else -> listOf(
+//            Color(0xFF729EF2),
+//            Color(0xFF9365C2),
+//            Color(0xFF452192)
+//          )
+//        }
+//        Box(
+//          modifier = Modifier
+//            .padding(10.dp)
+//            .size(24.dp)
+//            .background(
+//              brush = Brush.linearGradient(
+//                colors = tagsColorsGradient
+//              ), shape = CircleShape
+//            ), contentAlignment = Alignment.Center
+//        ) {
+//          tags?.let {
+//            val drawableResId = when (tagId) {
+//              1 -> R.drawable.lab1
+//              2 -> R.drawable.lab2
+//              3 -> R.drawable.lab4
+//              else -> R.drawable.lab1
+//            }
+//            Image(
+//              painter = painterResource(id = drawableResId), contentDescription = ""
+//            )
+//          }
+//        }
+//      }
+      Image(painter = painterResource(id = R.drawable.photo), contentDescription = "")
+   // }
     Column(modifier = Modifier.padding(vertical = 12.dp, horizontal = 12.dp)) {
-      Text(text = products.name, fontSize = 14.sp, maxLines = 1)
-      Text(text = "${products.measure} ${products.measureUnit}", fontSize = 14.sp, color = colorResource(id = R.color.gray))
+      Text(text = products.name.replace(Regex("\\s+\\d+гр$"), ""), fontSize = 14.sp, maxLines = 1)
+      Text(
+        text = if (products.measure > 1) "${products.measure} ${products.measureUnit}" else " ",
+        fontSize = 14.sp,
+        color = colorResource(id = R.color.gray)
+      )
       if (isOnCart) {
         ButtonsCounter(buttonColors = ButtonDefaults.buttonColors(containerColor = Color.White),
-          count = cartItemsCount.value,
+          count = cartItemsCount.intValue,
           onMinusClicked = { onMinusClicked() },
           onPlusClicked = { onPlusClicked() })
       } else {
@@ -262,12 +321,14 @@ fun ItemCard(
   }
 }
 
+
 @Composable
 fun ButtonAddToCart(priceNew: Int, priceOld: Int, addToCart: () -> Unit) {
   TextButton(modifier = Modifier.fillMaxWidth(),
     colors = ButtonDefaults.textButtonColors(containerColor = Color.White),
     shape = RoundedCornerShape(10.dp),
-    onClick = { addToCart() }) {
+    onClick = { addToCart() }
+  ) {
     Text(text = "$priceNew ₽ ", fontWeight = FontWeight.Medium, color = colorResource(id = R.color.dark_gray))
     if (priceOld > 0) {
       Text(text = "$priceOld ₽", textDecoration = TextDecoration.LineThrough, color = Color.LightGray, fontSize = 14.sp)
@@ -275,50 +336,6 @@ fun ButtonAddToCart(priceNew: Int, priceOld: Int, addToCart: () -> Unit) {
   }
 }
 
-@Composable
-fun ButtonsCounter(
-  modifier: Modifier = Modifier,
-  buttonColors: ButtonColors,
-  count: Int,
-  onMinusClicked: () -> Unit,
-  onPlusClicked: () -> Unit,
-) {
-
-  Row(
-    modifier = modifier.fillMaxWidth(),
-    horizontalArrangement = Arrangement.SpaceBetween,
-    verticalAlignment = Alignment.CenterVertically
-  ) {
-    Button(
-      modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-      onClick = { onMinusClicked() },
-      colors = buttonColors,
-      shape = RoundedCornerShape(10.dp),
-      contentPadding = PaddingValues(10.dp),
-    ) {
-      Icon(
-        painter = painterResource(id = R.drawable.minus),
-        contentDescription = "",
-        tint = colorResource(id = R.color.orange)
-      )
-    }
-    Text(text = "$count", fontWeight = FontWeight.Medium, fontSize = 20.sp)
-
-    Button(
-      modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-      onClick = { onPlusClicked() },
-      colors = buttonColors,
-      shape = RoundedCornerShape(10.dp),
-      contentPadding = PaddingValues(10.dp),
-    ) {
-      Icon(
-        painter = painterResource(id = R.drawable.plus),
-        contentDescription = "",
-        tint = colorResource(id = R.color.orange)
-      )
-    }
-  }
-}
 
 @Preview(device = Devices.NEXUS_5)
 @Composable
