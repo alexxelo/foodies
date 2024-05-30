@@ -1,7 +1,6 @@
 package com.example.foodies.ui.presentation.search
 
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -61,48 +60,34 @@ fun SearchScreen(
   val tag = viewModel.tag.value
 
   Surface(
-    modifier = Modifier.fillMaxWidth(),
-    tonalElevation = 4.dp
+    modifier = Modifier.fillMaxWidth(), tonalElevation = 4.dp
   ) {
 
-    Scaffold(
-      topBar = {
-        TopAppBar(title = {
-          TextField(
-            value = searchText,
-            onValueChange = viewModel::onSearchTextChange,
-            modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text(text = stringResource(R.string.find_product)) },
-            singleLine = true,
-            colors = TextFieldDefaults.colors(
-              unfocusedContainerColor = Color.Transparent,
-              focusedContainerColor = Color.Transparent
-            ),
-            shape = TextFieldDefaults.shape,
-            textStyle = LocalTextStyle.current.copy(color = Color.Black),
-            trailingIcon = {
-              IconButton(onClick = { viewModel.onSearchTextChange("") }) {
-                Icon(Icons.Default.Clear, contentDescription = "Clear")
-              }
-            }
-          )
-          Log.d("search searchText - ", "$searchText")
-          Log.d("search is - ", "$isSearching")
-          Log.d("search tags - ", "${tag.tags}")
-          //Log.d("search prod - ", "${products}")
-
-        },
-          navigationIcon = {
-            IconButton(onClick = { onBackClicked() }) {
-              Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                tint = colorResource(id = R.color.orange),
-                contentDescription = ""
-              )
+    Scaffold(topBar = {
+      TopAppBar(title = {
+        TextField(value = searchText,
+          onValueChange = viewModel::onSearchTextChange,
+          modifier = Modifier.fillMaxWidth(),
+          placeholder = { Text(text = stringResource(R.string.find_product)) },
+          singleLine = true,
+          colors = TextFieldDefaults.colors(
+            unfocusedContainerColor = Color.Transparent, focusedContainerColor = Color.Transparent
+          ),
+          shape = TextFieldDefaults.shape,
+          textStyle = LocalTextStyle.current.copy(color = Color.Black),
+          trailingIcon = {
+            IconButton(onClick = { viewModel.onSearchTextChange("") }) {
+              Icon(Icons.Default.Clear, contentDescription = "Clear")
             }
           })
-      }
-    ) { paddingValues ->
+      }, navigationIcon = {
+        IconButton(onClick = { onBackClicked() }) {
+          Icon(
+            imageVector = Icons.Filled.ArrowBack, tint = colorResource(id = R.color.orange), contentDescription = ""
+          )
+        }
+      })
+    }) { paddingValues ->
       Column(
         modifier = modifier
           .fillMaxSize()
@@ -119,23 +104,22 @@ fun SearchScreen(
           } else {
             if (products.isEmpty()) {
               EmptyScreen(
-                modifier = Modifier.fillMaxSize(),
-                text = stringResource(id = R.string.empty_search_result)
+                modifier = Modifier.fillMaxSize(), text = stringResource(id = R.string.empty_search_result)
               )
             } else {
               LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier
+                columns = GridCells.Fixed(2), modifier = Modifier
                   .fillMaxWidth()
                   .weight(1f)
               ) {
-                items(products) { product ->
-                  Log.d("search prod - ", "$product")
-                  Log.d("search tag = ", "${tag.tags}")
+                items(
+                  items = products,
+                  key = { product -> product.id.toString() + cartViewModel.cart.value.countRepeatedProducts(product.id) }) { product ->
+//
                   ItemCard(
-                    products = product,
+                    product = product,
                     isOnCart = cartViewModel.isOnCart(productsModel = product),
-                    //tag = tag.tags,
+                    tag = tag.tags,
                     count = cartViewModel.cart.value.countRepeatedProducts(product.id),
                     addToCart = { cartViewModel.addItem(it) },
                     onItemClicked = { onItemClicked(product.id) },

@@ -156,13 +156,13 @@ fun CatalogScreen(
           ) {
             items(
               items = productsModelList,
-              key = { productsModelList ->
-                productsModelList.id.toString() + cartViewModel.cart.value.countRepeatedProducts(
-                  productsModelList.id
+              key = { product ->
+                product.id.toString() + cartViewModel.cart.value.countRepeatedProducts(
+                  product.id
                 )
               }) { productsModel ->
               ItemCard(
-                products = productsModel,
+                product = productsModel,
                 tag = tagState.tags,
                 onItemClicked = { id -> onItemClicked(id) },
                 isOnCart = cartViewModel.isOnCart(productsModel = productsModel),
@@ -220,7 +220,7 @@ fun CategoryItem(
 @Composable
 fun ItemCard(
   modifier: Modifier = Modifier,
-  products: ProductsModel,
+  product: ProductsModel,
   tag: List<TagsModel>? = null,
   isOnCart: Boolean,
   count: Int,
@@ -238,70 +238,70 @@ fun ItemCard(
     colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.gray_bg)),
     modifier = modifier
       .padding(8.dp)
-      .clickable { onItemClicked(products.id) }) {
-    //Box(modifier = Modifier) {
-//      products.tagIds.forEachIndexed { index, tagId ->
-//        val tags = tag?.find { it.id == tagId } // Находим соответствующий тег по идентификатору
-//        val tagsColorsGradient = when (tagId) {
-//          1 -> {
-//            listOf(
-//              Color(0xFF729EF2),
-//              Color(0xFF9365C2),
-//              Color(0xFF452192)
-//            )
-//          }
-//
-//          2 -> {
-//            listOf(
-//              Color(0xFFF97D23),
-//              Color(0xFFFB4E1E),
-//              Color(0xFFF83600)
-//            )
-//          }
-//
-//          3 -> {
-//            listOf(
-//              Color(0xFFA8E063),
-//              Color(0xFF66BE3E),
-//              Color(0xFF56AB2F)
-//            )
-//          }
-//
-//          else -> listOf(
-//            Color(0xFF729EF2),
-//            Color(0xFF9365C2),
-//            Color(0xFF452192)
-//          )
-//        }
-//        Box(
-//          modifier = Modifier
-//            .padding(10.dp)
-//            .size(24.dp)
-//            .background(
-//              brush = Brush.linearGradient(
-//                colors = tagsColorsGradient
-//              ), shape = CircleShape
-//            ), contentAlignment = Alignment.Center
-//        ) {
-//          tags?.let {
-//            val drawableResId = when (tagId) {
-//              1 -> R.drawable.lab1
-//              2 -> R.drawable.lab2
-//              3 -> R.drawable.lab4
-//              else -> R.drawable.lab1
-//            }
-//            Image(
-//              painter = painterResource(id = drawableResId), contentDescription = ""
-//            )
-//          }
-//        }
-//      }
+      .clickable { onItemClicked(product.id) }) {
+    Box(modifier = Modifier) {
+      product.tagIds.forEachIndexed { index, tagId ->
+        val tags = tag?.find { it.id == tagId } // Находим соответствующий тег по идентификатору
+        val tagsColorsGradient = when (tagId) {
+          1 -> {
+            listOf(
+              Color(0xFF729EF2),
+              Color(0xFF9365C2),
+              Color(0xFF452192)
+            )
+          }
+
+          2 -> {
+            listOf(
+              Color(0xFFF97D23),
+              Color(0xFFFB4E1E),
+              Color(0xFFF83600)
+            )
+          }
+
+          3 -> {
+            listOf(
+              Color(0xFFA8E063),
+              Color(0xFF66BE3E),
+              Color(0xFF56AB2F)
+            )
+          }
+
+          else -> listOf(
+            Color(0xFF729EF2),
+            Color(0xFF9365C2),
+            Color(0xFF452192)
+          )
+        }
+        Box(
+          modifier = Modifier
+            .padding(10.dp)
+            .size(24.dp)
+            .background(
+              brush = Brush.linearGradient(
+                colors = tagsColorsGradient
+              ), shape = CircleShape
+            ), contentAlignment = Alignment.Center
+        ) {
+          tags?.let {
+            val drawableResId = when (tagId) {
+              1 -> R.drawable.lab1
+              2 -> R.drawable.lab2
+              3 -> R.drawable.lab4
+              else -> R.drawable.lab1
+            }
+            Image(
+              painter = painterResource(id = drawableResId), contentDescription = ""
+            )
+          }
+        }
+      }
       Image(painter = painterResource(id = R.drawable.photo), contentDescription = "")
-   // }
+    }
     Column(modifier = Modifier.padding(vertical = 12.dp, horizontal = 12.dp)) {
-      Text(text = products.name.replace(Regex("\\s+\\d+гр$"), ""), fontSize = 14.sp, maxLines = 1)
+      Text(text = product.name.replace(Regex("\\s+\\d+гр$"), ""), fontSize = 14.sp, maxLines = 1)
       Text(
-        text = if (products.measure > 1) "${products.measure} ${products.measureUnit}" else " ",
+        text = if (product.measure > 1) "${product.measure} ${product.measureUnit}" else " ",
         fontSize = 14.sp,
         color = colorResource(id = R.color.gray)
       )
@@ -312,9 +312,9 @@ fun ItemCard(
           onPlusClicked = { onPlusClicked() })
       } else {
         ButtonAddToCart(
-          priceNew = PriceFormatter.formatPrice(products.priceCurrent),
-          priceOld = PriceFormatter.formatPrice(products.priceOld),
-          addToCart = { addToCart(products) }
+          priceNew = PriceFormatter.formatPrice(product.priceCurrent),
+          priceOld = PriceFormatter.formatPrice(product.priceOld),
+          addToCart = { addToCart(product) }
         )
       }
     }
