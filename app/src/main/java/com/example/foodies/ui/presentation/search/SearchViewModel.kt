@@ -25,12 +25,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class SearchResult(
-  //val isSearching: Boolean,
-  val products: List<ProductsModel>,
-  val error: String? = null
-)
-
 @HiltViewModel
 class SearchViewModel @Inject constructor(
   private val getProductsUseCase: GetProductsUseCase,
@@ -45,9 +39,7 @@ class SearchViewModel @Inject constructor(
 
   private val _isSearching = MutableStateFlow(false)
   val isSearching = _isSearching.asStateFlow()
-//
-//  private val _searchResult = MutableStateFlow(SearchResult(products = emptyList()))
-//  val searchResult: StateFlow<SearchResult> = _searchResult
+
 
   private val _allProducts = MutableStateFlow(ProductState())
 
@@ -55,8 +47,8 @@ class SearchViewModel @Inject constructor(
 
   @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
   val products = searchText
-    .debounce(3000L)
     .onEach { _isSearching.value = true }
+    .debounce(1000L)
     .flatMapLatest { text ->
       _allProducts.map { productState ->
         productState.products?.filter {
@@ -72,64 +64,6 @@ class SearchViewModel @Inject constructor(
       SharingStarted.WhileSubscribed(5000),
       emptyList()
     )
-
-//  @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-//  val products = searchText
-//    .debounce(1000L)
-//    .onEach { _isSearching.value = true }
-//    .flatMapLatest { text ->
-//      _allProducts.map { productState ->
-//        productState.products?.filter {
-//          it.doesMatchSearchQuery(text)
-//        } ?: emptyList()
-
-//        if (text.isBlank()) {
-//          productState.products ?: emptyList()
-//        } else {
-//          val filteredProducts = productState.products?.filter {
-//            it.doesMatchSearchQuery(text)
-//          }
-//          filteredProducts ?: emptyList()
-//        }
-//      }
-//    }
-//    .onEach { result ->
-//      _isSearching.value = false
-//    }
-//    .stateIn(
-//      viewModelScope,
-//      SharingStarted.WhileSubscribed(5000),
-//      emptyList()
-//    )
-//  val products = searchText
-//    .debounce(3000L)
-//    .filter { it.isNotBlank() }
-//    .onEach {
-//      _isSearching.value = true
-//    }
-//    .flatMapLatest { text ->
-//      _allProducts.map { productState ->
-//        val filteredProducts = productState.products?.filter {
-//          it.doesMatchSearchQuery(text)
-//        } ?: emptyList()
-//
-//        val searchResult = SearchResult(products = filteredProducts)
-//        if (filteredProducts.isEmpty()) {
-//          searchResult.copy(error = "No results found")
-//        } else {
-//          searchResult
-//        }
-//      }
-//    }
-//    .onEach {
-//      _isSearching.value = false
-//    }
-//    .stateIn(
-//      viewModelScope,
-//      SharingStarted.WhileSubscribed(5000),
-//      SearchResult(products = emptyList())
-//    )
-
 
   init {
     getProducts()
