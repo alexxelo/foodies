@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -22,6 +24,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,7 +60,7 @@ fun EmptyScreen(modifier: Modifier = Modifier, text: String) {
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.Center
   ) {
-    Text(text = text)
+    Text(text = text, textAlign = TextAlign.Center)
   }
 }
 
@@ -101,6 +105,20 @@ fun ButtonsCounter(
         contentDescription = "",
         tint = colorResource(id = R.color.orange)
       )
+    }
+  }
+}
+
+@Composable
+fun ButtonAddToCart(priceNew: Int, priceOld: Int, addToCart: () -> Unit) {
+  TextButton(modifier = Modifier.fillMaxWidth(),
+    colors = ButtonDefaults.textButtonColors(containerColor = Color.White),
+    shape = RoundedCornerShape(10.dp),
+    onClick = { addToCart() }
+  ) {
+    Text(text = "$priceNew ₽ ", fontWeight = FontWeight.Medium, color = colorResource(id = R.color.dark_gray))
+    if (priceOld > 0) {
+      Text(text = "$priceOld ₽", textDecoration = TextDecoration.LineThrough, color = Color.LightGray, fontSize = 14.sp)
     }
   }
 }

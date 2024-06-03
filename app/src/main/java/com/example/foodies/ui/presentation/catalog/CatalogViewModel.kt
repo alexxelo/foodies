@@ -13,9 +13,17 @@ import com.example.foodies.ui.presentation.states.CategoryState
 import com.example.foodies.ui.presentation.states.ProductState
 import com.example.foodies.ui.presentation.states.TagState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+data class FilterOptions(
+  val isVegetarian: Boolean = false,
+  val isSpicy: Boolean = false,
+  val hasDiscount: Boolean = false
+)
 
 @HiltViewModel
 class CatalogViewModel @Inject constructor(
@@ -31,15 +39,13 @@ class CatalogViewModel @Inject constructor(
   var category: State<CategoryState> = _category
 
 
-  private val _filteredList = mutableStateOf(ProductState())
+  private val _filteredList = mutableStateOf(ProductState(isLoading = true))
   var filteredList: State<ProductState> = _filteredList
 
   private val _selectedCategory = mutableStateOf<CategoryModel?>(null)
   val selectedCategory: State<CategoryModel?> = _selectedCategory
 
   private val _isCategorySelected = mutableStateOf(false)
-  val isCategorySelected: State<Boolean> = _isCategorySelected
-
 
   private val _allProducts = mutableStateOf(ProductState())
 
@@ -67,6 +73,24 @@ class CatalogViewModel @Inject constructor(
 
   fun categoryFilter(categoryId: Int) {
     _filteredList.value = ProductState(_allProducts.value.products?.filter { it.categoryId == categoryId })
+  }
+
+  fun applyFilters(filterOptions: FilterOptions) {
+    val tagsToFilter = mutableListOf<Int>()
+    if (filterOptions.isVegetarian) tagsToFilter.add(2)
+    if (filterOptions.isSpicy) tagsToFilter.add(4)
+    if (filterOptions.hasDiscount) tagsToFilter.add(3)
+    viewModelScope.launch {
+      _filteredList.value = ProductState(isLoading = true)
+      delay(500)
+      val filteredProducts = _allProducts.value.products?.filter { product ->
+        tagsToFilter.all { it in product.tagIds }
+      } ?: emptyList()
+
+      _filteredList.value = ProductState(
+        filteredProducts
+      )
+    }
   }
 
   private fun getTag() {

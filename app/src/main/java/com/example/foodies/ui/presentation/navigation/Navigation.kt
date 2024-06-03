@@ -41,10 +41,10 @@ fun Navigation(modifier: Modifier = Modifier) {
         onSearchClicked = { navController.navigate(Screen.SearchScreen.route) },
         onBucketClicked = { navController.navigate(Screen.BucketScreen.route) },
         onCategoryClicked = { catalogViewModel.categoryFilter(it) },
-        onFilterClicked = {},
         onItemClicked = { id ->
           navController.navigate(Screen.ItemScreen.route + "/$id")
         },
+        onFilterClicked = {catalogViewModel.applyFilters(it)},
         onMinusClicked = { cartViewModel.deleteItem(it) },
         onPlusClicked = { cartViewModel.addItem(it) },
         catalogViewModel = catalogViewModel,

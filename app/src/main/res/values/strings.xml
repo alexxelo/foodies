@@ -14,4 +14,10 @@
     <string name="empty_search_screen">Введите название блюда, которые ищите</string>
     <string name="empty_search_result">Ничего не нашлось :(</string>
     <string name="empty_filter_result">Таких блюд нет :( Попробуйте изменить фильтры</string>
+    <string name="choose">Подобрать блюда</string>
+    <string name="done">Готово</string>
+    <string name="vegatarian">Без мяса</string>
+    <string name="spicy">Острое</string>
+    <string name="discount">Со скидкой</string>
+    <string name="noFilterResult">Таких блюд нет :( \n Попробуйте изменить фильтры</string>
 </resources>
