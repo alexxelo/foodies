@@ -34,15 +34,15 @@ An app for selecting and ordering food
 
 # Screenshots
 
-<div style="display: flex; flex-wrap: wrap; gap: 20px;">
-<img src="app/src/main/res/drawable/screenshot_20240820_165104.png" width="200"  alt=""/>
-<img src="app/src/main/res/drawable/screenshot_20240820_165123.png" width="200"  alt=""/>
-<img src="app/src/main/res/drawable/screenshot_20240820_165143.png" width="200"  alt=""/>
-<img src="app/src/main/res/drawable/screenshot_20240820_165202.png" width="200"  alt=""/>
-<img src="app/src/main/res/drawable/screenshot_20240820_165224.png" width="200"  alt=""/>
-<img src="app/src/main/res/drawable/screenshot_20240820_165241.png" width="200"  alt=""/>
-<img src="app/src/main/res/drawable/screenshot_20240820_165253.png" width="200"  alt=""/>
-<img src="app/src/main/res/drawable/screenshot_20240820_165322.png" width="200"  alt=""/>
-<img src="app/src/main/res/drawable/screenshot_20240820_165339.png" width="200"  alt=""/>
+<div style="display: flex; flex-wrap: wrap; gap: 25px;">
+<img src="app/src/main/res/drawable/screenshot_20240820_165104.png" width="250"  alt=""/>
+<img src="app/src/main/res/drawable/screenshot_20240820_165123.png" width="250"  alt=""/>
+<img src="app/src/main/res/drawable/screenshot_20240820_165143.png" width="250"  alt=""/>
+<img src="app/src/main/res/drawable/screenshot_20240820_165202.png" width="250"  alt=""/>
+<img src="app/src/main/res/drawable/screenshot_20240820_165224.png" width="250"  alt=""/>
+<img src="app/src/main/res/drawable/screenshot_20240820_165241.png" width="250"  alt=""/>
+<img src="app/src/main/res/drawable/screenshot_20240820_165253.png" width="250"  alt=""/>
+<img src="app/src/main/res/drawable/screenshot_20240820_165322.png" width="250"  alt=""/>
+<img src="app/src/main/res/drawable/screenshot_20240820_165339.png" width="250"  alt=""/>
 </div>
 
