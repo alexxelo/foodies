@@ -33,5 +33,6 @@ An app for selecting and ordering food
   
 
 # Screenshots
+<img src="app/src/main/res/drawable/screenshot_20240820_165104.png" width="300"  alt=""/>
 
 
