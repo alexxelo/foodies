@@ -138,11 +138,11 @@ class CatalogViewModel @Inject constructor(
         }
 
         is Resource.Error -> {
-          _allProducts.value = ProductState(error = result.message ?: "An unexpected error occurred")
+          _allProducts.value = ProductState(error = result.message ?: "An unexpected error occurred", isLoading = false)
         }
 
         is Resource.Success -> {
-          _allProducts.value = ProductState(products = result.data)
+          _allProducts.value = ProductState(products = result.data, isLoading = false)
           categoryFilter(selectedCategory.value!!.id)
         }
       }

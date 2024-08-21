@@ -236,12 +236,6 @@ fun CatalogScreen(
                 }
               }
             }
-//              if (productsState.isLoading) {
-//                CircularProgressIndicator(
-//                  modifier = Modifier
-//                    .align(Alignment.Center)
-//                )
-//              }
           }
         }
 
@@ -286,7 +280,9 @@ fun CatalogScreen(
           cartTotalItemsState.intValue = cart.totalItems
         }
       }
+
     }
+
   }
 }
 

@@ -65,6 +65,7 @@ class SearchViewModel @Inject constructor(
       emptyList()
     )
 
+
   init {
     getProducts()
     getTag()

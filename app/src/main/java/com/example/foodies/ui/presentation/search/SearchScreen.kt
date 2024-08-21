@@ -52,7 +52,6 @@ fun SearchScreen(
   cartViewModel: CartViewModel = hiltViewModel()
 ) {
   val searchText by viewModel.searchText.collectAsState()
-  //val searchResult by viewModel.searchResult.collectAsState()
   val isSearching by viewModel.isSearching.collectAsState()
 
   val products by viewModel.products.collectAsState()
@@ -83,7 +82,9 @@ fun SearchScreen(
       }, navigationIcon = {
         IconButton(onClick = { onBackClicked() }) {
           Icon(
-            imageVector = Icons.Filled.ArrowBack, tint = colorResource(id = R.color.orange), contentDescription = ""
+            imageVector = Icons.Filled.ArrowBack,
+            tint = colorResource(id = R.color.orange),
+            contentDescription = ""
           )
         }
       })
@@ -95,7 +96,7 @@ fun SearchScreen(
       ) {
         if (searchText.isNotBlank()) {
 
-          if (isSearching) {//true
+          if (isSearching) {
             Box(modifier = Modifier.fillMaxSize()) {
               CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.Center)
@@ -104,7 +105,8 @@ fun SearchScreen(
           } else {
             if (products.isEmpty()) {
               EmptyScreen(
-                modifier = Modifier.fillMaxSize(), text = stringResource(id = R.string.empty_search_result)
+                modifier = Modifier.fillMaxSize(),
+                text = stringResource(id = R.string.empty_search_result)
               )
             } else {
               LazyVerticalGrid(
@@ -114,8 +116,11 @@ fun SearchScreen(
               ) {
                 items(
                   items = products,
-                  key = { product -> product.id.toString() + cartViewModel.cart.value.countRepeatedProducts(product.id) }) { product ->
-//
+                  key = { product ->
+                    product.id.toString() + cartViewModel.cart.value.countRepeatedProducts(
+                      product.id
+                    )
+                  }) { product ->
                   ItemCard(
                     product = product,
                     isOnCart = cartViewModel.isOnCart(productsModel = product),
@@ -130,7 +135,10 @@ fun SearchScreen(
             }
           }
         } else {
-          EmptyScreen(modifier = Modifier.fillMaxSize(), text = stringResource(id = R.string.empty_search_screen))
+          EmptyScreen(
+            modifier = Modifier.fillMaxSize(),
+            text = stringResource(id = R.string.empty_search_screen)
+          )
         }
       }
     }
