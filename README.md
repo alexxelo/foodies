@@ -33,6 +33,8 @@ An app for selecting and ordering food
   
 
 # Screenshots
+
+<div style="display: flex; flex-wrap: wrap; gap: 10px;">
 <img src="app/src/main/res/drawable/screenshot_20240820_165104.png" width="300"  alt=""/>
 <img src="app/src/main/res/drawable/screenshot_20240820_165123.png" width="300"  alt=""/>
 <img src="app/src/main/res/drawable/screenshot_20240820_165143.png" width="300"  alt=""/>
@@ -42,5 +44,5 @@ An app for selecting and ordering food
 <img src="app/src/main/res/drawable/screenshot_20240820_165253.png" width="300"  alt=""/>
 <img src="app/src/main/res/drawable/screenshot_20240820_165322.png" width="300"  alt=""/>
 <img src="app/src/main/res/drawable/screenshot_20240820_165339.png" width="300"  alt=""/>
-
+</div>
 
